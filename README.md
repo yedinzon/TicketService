@@ -38,6 +38,7 @@ La arquitectura DDD y frameworks como AutoMapper, FluentValidation, Entity Frame
 El sistema implementa el estándar JSON Patch
 Operacion Soportada: replace
 Ejemplo de JSON: 
+    ```json
     [
       {
         "op":"replace",
@@ -54,13 +55,13 @@ Ejemplo de JSON:
 Este proyecto implementa las siguientes buenas prácticas de desarrollo, principios SOLID, convención de una clase por archivo para mejorar la mantenibilidad, el uso de camelCase para variables y parámetros, PascalCase para tipos y propiedades, y la adopción del inglés como lenguaje estándar en el código, se utiliza el español exclusivamente para los mensajes de validación dirigidos al usuario y los nombres de campos en los DTOs de request y response.
 
 # Logging
-Archivos de Log: Registro automático en directorio Logs/
-Rotación Diaria: Archivos separados por fecha
+    Archivos de Log: Registro automático en directorio Logs/
+    Rotación Diaria: Archivos separados por fecha
 
 # Unit Testing
-MSTest: Framework de testing principal
-NSubstitute: Librería para mocking de dependencias
-Cobertura: Tests para capas Domain y Application
+    MSTest: Framework de testing principal
+    NSubstitute: Librería para mocking de dependencias
+    Cobertura: Tests para capas Domain y Application
 
 # Arbol del proyecto
     TicketService/
@@ -79,7 +80,7 @@ Cobertura: Tests para capas Domain y Application
 Se usa para validar los datos de entrada en las peticiones de los endpoints (RequestsDtos)
 
 # AutoMapper
-El proyecto utiliza AutoMapper para transformar objetos entre las diferentes capas:
+    El proyecto utiliza AutoMapper para transformar objetos entre las diferentes capas:
     - Requests -> Dtos
     - Domain Entities -> DTOs
     - DTOs -> Responses
