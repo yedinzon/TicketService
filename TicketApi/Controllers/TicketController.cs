@@ -21,5 +21,12 @@ namespace TicketApi.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("GetPaged")]
+        public async Task<IActionResult> GetPaged([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        {
+            var result = await _ticketService.GetPagedAsync(pageNumber, pageSize);
+            return Ok(result);
+        }
     }
 }

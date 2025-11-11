@@ -1,5 +1,7 @@
-﻿using Application.Interfaces.Repositories;
+﻿using Application.Common;
+using Application.Interfaces.Repositories;
 using Domain.Entities;
+using Infrastructure.Extensions;
 using Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,5 +21,12 @@ public class TicketRepository : ITicketRepository
         var x = await _context.Tickets.ToListAsync();
 
         return x;
+    }
+
+    public async Task<PagedResult<Ticket>> GetPagedAsync(int pageNumber, int pageSize)
+    {
+        return await _context.Tickets.AsNoTracking()
+           .OrderByDescending(t => t.CreatedAt)
+           .ToPagedResultAsync(pageNumber, pageSize);
     }
 }
