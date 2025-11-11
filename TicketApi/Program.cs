@@ -6,8 +6,10 @@ using Infrastructure.Persistence.Context;
 using Infrastructure.Persistence.Seed;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Serialization;
+using Serilog;
 using TicketApi.Helpers.ValidationHelper;
 using TicketApi.Mappers;
+using TicketApi.Middleware;
 using TicketApi.Validators;
 
 namespace TicketApi;
@@ -17,6 +19,13 @@ public static class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        Log.Logger = new LoggerConfiguration()
+            .WriteTo.Console()
+            .WriteTo.File("Logs/ticketService-.log", rollingInterval: RollingInterval.Day)
+            .CreateLogger();
+
+        builder.Host.UseSerilog();
 
         builder.Services.AddApplication();
         builder.Services.AddInfrastructure(builder.Configuration);
@@ -36,6 +45,7 @@ public static class Program
         builder.Services.AddSwaggerGen();
 
         var app = builder.Build();
+        app.UseMiddleware<ErrorMiddleware>();
 
         // Seed Database
         using (IServiceScope scope = app.Services.CreateScope())
