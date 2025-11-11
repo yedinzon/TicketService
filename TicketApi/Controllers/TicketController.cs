@@ -16,14 +16,14 @@ namespace TicketApi.Controllers
             _ticketService = ticketService;
         }
 
-        [HttpGet("GetAll")]
+        [HttpGet("all")]
         public async Task<IActionResult> GetAll()
         {
             IEnumerable<TicketDto> tickets = await _ticketService.GetAllAsync();
             return Ok(tickets);
         }
 
-        [HttpGet("GetPaged")]
+        [HttpGet]
         public async Task<IActionResult> GetPaged(
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 10)
@@ -32,7 +32,7 @@ namespace TicketApi.Controllers
             return Ok(ticketsPaged);
         }
 
-        [HttpGet("GetById/{id:Guid}")]
+        [HttpGet("{id:Guid}")]
         public async Task<IActionResult> GetById(Guid id)
         {
             TicketDto? raffle = await _ticketService.GetByIdAsync(id);
