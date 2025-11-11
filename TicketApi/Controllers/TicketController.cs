@@ -126,5 +126,3 @@ public class TicketController : ControllerBase
         return NoContent();
     }
 }
-
-//TODO: manejar errores.
