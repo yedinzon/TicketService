@@ -36,8 +36,8 @@ La arquitectura DDD y frameworks como AutoMapper, FluentValidation, Entity Frame
     DELETE/api/tickets/{id}	    Eliminar ticket
 
 El sistema implementa el estándar JSON Patch
-Operacion Soportada: replace
-Ejemplo de JSON: 
+    - Operacion Soportada: replace
+    - Ejemplo de JSON: 
 
     [
       {
