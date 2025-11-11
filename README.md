@@ -38,7 +38,7 @@ La arquitectura DDD y frameworks como AutoMapper, FluentValidation, Entity Frame
 El sistema implementa el estándar JSON Patch
 Operacion Soportada: replace
 Ejemplo de JSON: 
-    ```json
+
     [
       {
         "op":"replace",
