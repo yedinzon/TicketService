@@ -6,67 +6,75 @@ using Microsoft.AspNetCore.Mvc;
 using TicketApi.Models.Requests;
 using TicketApi.Models.Responses;
 
-namespace TicketApi.Controllers
+namespace TicketApi.Controllers;
+
+[ApiController]
+[Route("[controller]")]
+public class TicketController : ControllerBase
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class TicketController : ControllerBase
+    private readonly ITicketService _ticketService;
+    private readonly IMapper _mapper;
+
+    public TicketController(ITicketService ticketService, IMapper mapper)
     {
-        private readonly ITicketService _ticketService;
-        private readonly IMapper _mapper;
+        _ticketService = ticketService;
+        _mapper = mapper;
+    }
 
-        public TicketController(ITicketService ticketService, IMapper mapper)
-        {
-            _ticketService = ticketService;
-            _mapper = mapper;
-        }
+    [HttpGet("all")]
+    public async Task<IActionResult> GetAll()
+    {
+        IEnumerable<TicketDto> tickets = await _ticketService.GetAllAsync();
+        var ticketsResponse = _mapper.Map<IEnumerable<TicketResponse>>(tickets);
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateTicketRequest request)
-        {
-            var ticket = _mapper.Map<CreateTicketDto>(request);
-            TicketDto createdTicket = await _ticketService.CreateAsync(ticket);
+        return Ok(ticketsResponse);
+    }
 
-            return CreatedAtAction(
-                nameof(GetById),
-                new { id = createdTicket.Id },
-                createdTicket);
-        }
+    [HttpGet]
+    public async Task<IActionResult> GetPaged(
+        [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 10)
+    {
+        PagedResult<TicketDto> ticketsPaged = await _ticketService.GetPagedAsync(pageNumber, pageSize);
 
-        [HttpGet("all")]
-        public async Task<IActionResult> GetAll()
-        {
-            IEnumerable<TicketDto> tickets = await _ticketService.GetAllAsync();
-            var ticketsResponse = _mapper.Map<IEnumerable<TicketResponse>>(tickets);
+        var ticketsResponse = new PagedResult<TicketResponse>(
+            items: _mapper.Map<IReadOnlyList<TicketResponse>>(ticketsPaged.Items),
+            ticketsPaged.PageNumber,
+            ticketsPaged.PageSize,
+            ticketsPaged.TotalCount);
 
-            return Ok(ticketsResponse);
-        }
+        return Ok(ticketsResponse);
+    }
 
-        [HttpGet("{id:Guid}")]
-        public async Task<IActionResult> GetById(Guid id)
-        {
-            TicketDto? ticket = await _ticketService.GetByIdAsync(id);
-            if (ticket is null) return NotFound();
-            var ticketResponse = _mapper.Map<TicketResponse>(ticket);
+    [HttpGet("{id:Guid}")]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        TicketDto? ticket = await _ticketService.GetByIdAsync(id);
+        if (ticket is null) return NotFound();
+        var ticketResponse = _mapper.Map<TicketResponse>(ticket);
 
-            return Ok(ticketResponse);
-        }
+        return Ok(ticketResponse);
+    }
 
-        [HttpGet]
-        public async Task<IActionResult> GetPaged(
-            [FromQuery] int pageNumber = 1,
-            [FromQuery] int pageSize = 10)
-        {
-            PagedResult<TicketDto> ticketsPaged = await _ticketService.GetPagedAsync(pageNumber, pageSize);
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] CreateTicketRequest request)
+    {
+        var ticket = _mapper.Map<CreateTicketDto>(request);
+        TicketDto createdTicket = await _ticketService.CreateAsync(ticket);
 
-            var ticketsResponse = new PagedResult<TicketResponse>(
-                items: _mapper.Map<IReadOnlyList<TicketResponse>>(ticketsPaged.Items),
-                ticketsPaged.PageNumber,
-                ticketsPaged.PageSize,
-                ticketsPaged.TotalCount);
+        return CreatedAtAction(
+            nameof(GetById),
+            new { id = createdTicket.Id },
+            createdTicket);
+    }
 
-            return Ok(ticketsResponse);
-        }
+    [HttpDelete("{id:Guid}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        bool deleted = await _ticketService.DeleteAsync(id);
+        if (!deleted) return NotFound();
+
+        return NoContent();
     }
 }
 

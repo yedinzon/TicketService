@@ -5,8 +5,9 @@ namespace Application.Interfaces.Services;
 
 public interface ITicketService
 {
-    Task<TicketDto> CreateAsync(CreateTicketDto createTicketDto);
     Task<IEnumerable<TicketDto>> GetAllAsync();
-    Task<TicketDto?> GetByIdAsync(Guid id);
     Task<PagedResult<TicketDto>> GetPagedAsync(int pageNumber, int pageSize);
+    Task<TicketDto?> GetByIdAsync(Guid id);
+    Task<TicketDto> CreateAsync(CreateTicketDto createTicketDto);
+    Task<bool> DeleteAsync(Guid id);
 }
