@@ -17,5 +17,6 @@ public class Ticket
         CreatedAt = DateTime.UtcNow;
         Status = TicketStatus.Open;
     }
+
     private Ticket() { }
 }

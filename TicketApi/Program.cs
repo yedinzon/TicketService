@@ -4,6 +4,7 @@ using Infrastructure;
 using Infrastructure.Persistence.Context;
 using Infrastructure.Persistence.Seed;
 using Microsoft.EntityFrameworkCore;
+using TicketApi.Mappers;
 
 namespace TicketApi;
 
@@ -13,9 +14,14 @@ public static class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Add services to the container.
+        // Add services to the container.      
         builder.Services.AddApplication();
         builder.Services.AddInfrastructure(builder.Configuration);
+
+        builder.Services.AddAutoMapper(cfg => { cfg.AllowNullCollections = true; },
+           typeof(ApiTicketProfile).Assembly,
+           typeof(Application.DependencyInjection).Assembly
+       );
 
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

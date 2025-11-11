@@ -17,6 +17,15 @@ public class TicketService : ITicketService
         _repository = repository;
         _mapper = mapper;
     }
+
+    public async Task<TicketDto> CreateAsync(CreateTicketDto createTicketDto)
+    {
+        var ticket = new Ticket(createTicketDto.Username);
+        Ticket createdTicket = await _repository.CreateAsync(ticket);
+
+        return _mapper.Map<TicketDto>(createdTicket);
+    }
+
     public async Task<IEnumerable<TicketDto>> GetAllAsync()
     {
         IEnumerable<Ticket> tickets = await _repository.GetAllAsync();

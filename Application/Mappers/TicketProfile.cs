@@ -9,6 +9,5 @@ public class TicketProfile : Profile
     public TicketProfile()
     {
         CreateMap<Ticket, TicketDto>();
-
     }
 }

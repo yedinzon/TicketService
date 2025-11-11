@@ -16,6 +16,13 @@ public class TicketRepository : ITicketRepository
         _context = context;
     }
 
+    public async Task<Ticket> CreateAsync(Ticket ticket)
+    {
+        await _context.Tickets.AddAsync(ticket);
+        await _context.SaveChangesAsync();
+        return ticket;
+    }
+
     public async Task<IEnumerable<Ticket>> GetAllAsync()
     {
         return await _context.Tickets
