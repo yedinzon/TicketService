@@ -4,6 +4,7 @@ using Application.Interfaces.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using TicketApi.Models.Requests;
+using TicketApi.Models.Responses;
 
 namespace TicketApi.Controllers
 {
@@ -36,15 +37,19 @@ namespace TicketApi.Controllers
         public async Task<IActionResult> GetAll()
         {
             IEnumerable<TicketDto> tickets = await _ticketService.GetAllAsync();
-            return Ok(tickets);
+            var ticketsResponse = _mapper.Map<IEnumerable<TicketResponse>>(tickets);
+
+            return Ok(ticketsResponse);
         }
 
         [HttpGet("{id:Guid}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            TicketDto? raffle = await _ticketService.GetByIdAsync(id);
-            if (raffle is null) return NotFound();
-            return Ok(raffle);
+            TicketDto? ticket = await _ticketService.GetByIdAsync(id);
+            if (ticket is null) return NotFound();
+            var ticketResponse = _mapper.Map<TicketResponse>(ticket);
+
+            return Ok(ticketResponse);
         }
 
         [HttpGet]
@@ -53,7 +58,14 @@ namespace TicketApi.Controllers
             [FromQuery] int pageSize = 10)
         {
             PagedResult<TicketDto> ticketsPaged = await _ticketService.GetPagedAsync(pageNumber, pageSize);
-            return Ok(ticketsPaged);
+
+            var ticketsResponse = new PagedResult<TicketResponse>(
+                items: _mapper.Map<IReadOnlyList<TicketResponse>>(ticketsPaged.Items),
+                ticketsPaged.PageNumber,
+                ticketsPaged.PageSize,
+                ticketsPaged.TotalCount);
+
+            return Ok(ticketsResponse);
         }
     }
 }
