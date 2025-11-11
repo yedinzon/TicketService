@@ -11,7 +11,7 @@ using TicketApi.Models.Responses;
 namespace TicketApi.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("tickets")]
 public class TicketController : ControllerBase
 {
     private readonly ITicketService _ticketService;
