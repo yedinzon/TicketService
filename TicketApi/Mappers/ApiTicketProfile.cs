@@ -10,6 +10,12 @@ public class ApiTicketProfile : Profile
 {
     public ApiTicketProfile()
     {
+        RegisterRequests();
+        RegisterResponses();
+    }
+
+    private void RegisterRequests()
+    {
         CreateMap<CreateTicketRequest, CreateTicketDto>()
             .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Usuario));
         CreateMap<UpdateTicketRequest, UpdateTicketDto>()
@@ -21,12 +27,14 @@ public class ApiTicketProfile : Profile
                 !string.IsNullOrEmpty(src.Estado)
                 ? Enum.Parse<TicketStatus>(src.Estado)
                 : (TicketStatus?)null));
-
+    }
+    private void RegisterResponses()
+    {
         CreateMap<TicketDto, TicketResponse>()
-            .ForMember(dest => dest.Codigo, opt => opt.MapFrom(src => src.Id))
-            .ForMember(dest => dest.Usuario, opt => opt.MapFrom(src => src.Username))
-            .ForMember(dest => dest.FechaCreacion, opt => opt.MapFrom(src => src.CreatedAt))
-            .ForMember(dest => dest.FechaActualizacion, opt => opt.MapFrom(src => src.UpdatedAt))
-            .ForMember(dest => dest.Estado, opt => opt.MapFrom(src => src.Status.ToString()));
+                    .ForMember(dest => dest.Codigo, opt => opt.MapFrom(src => src.Id))
+                    .ForMember(dest => dest.Usuario, opt => opt.MapFrom(src => src.Username))
+                    .ForMember(dest => dest.FechaCreacion, opt => opt.MapFrom(src => src.CreatedAt))
+                    .ForMember(dest => dest.FechaActualizacion, opt => opt.MapFrom(src => src.UpdatedAt))
+                    .ForMember(dest => dest.Estado, opt => opt.MapFrom(src => src.Status.ToString()));
     }
 }

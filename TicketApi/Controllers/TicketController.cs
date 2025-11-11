@@ -4,6 +4,7 @@ using Application.Interfaces.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using TicketApi.Helpers.ValidationHelper;
 using TicketApi.Models.Requests;
 using TicketApi.Models.Responses;
 
@@ -14,11 +15,16 @@ namespace TicketApi.Controllers;
 public class TicketController : ControllerBase
 {
     private readonly ITicketService _ticketService;
+    private readonly IValidationService _validationService;
     private readonly IMapper _mapper;
 
-    public TicketController(ITicketService ticketService, IMapper mapper)
+    public TicketController(
+        ITicketService ticketService,
+        IValidationService validationService,
+        IMapper mapper)
     {
         _ticketService = ticketService;
+        _validationService = validationService;
         _mapper = mapper;
     }
 
@@ -58,6 +64,10 @@ public class TicketController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateTicketRequest request)
     {
+        var result = await _validationService.ValidateAsync(request);
+        if (!result.IsValid)
+            return BadRequest(result.Errors.Select(e => new { e.PropertyName, e.ErrorMessage }));
+
         var ticket = _mapper.Map<CreateTicketDto>(request);
         TicketDto createdTicket = await _ticketService.CreateAsync(ticket);
 
@@ -70,6 +80,10 @@ public class TicketController : ControllerBase
     [HttpPut("{id:Guid}")]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateTicketRequest request)
     {
+        var result = await _validationService.ValidateAsync(request);
+        if (!result.IsValid)
+            return BadRequest(result.Errors.Select(e => new { e.PropertyName, e.ErrorMessage }));
+
         var ticketToUpdate = _mapper.Map<UpdateTicketDto>(request);
         TicketDto? updatedTicket = await _ticketService.UpdateAsync(id, ticketToUpdate);
         if (updatedTicket is null) return NotFound();
@@ -83,6 +97,10 @@ public class TicketController : ControllerBase
         Guid id,
         [FromBody] JsonPatchDocument<PatchTicketRequest> patchDoc)
     {
+        var result = await _validationService.ValidateAsync(patchDoc);
+        if (!result.IsValid)
+            return BadRequest(result.Errors.Select(e => new { e.PropertyName, e.ErrorMessage }));
+
         if (patchDoc is null) return BadRequest();
 
         var ticketRequest = new PatchTicketRequest();
@@ -106,4 +124,3 @@ public class TicketController : ControllerBase
 }
 
 //TODO: Validar parámetros de paginación y manejar errores.
-//TODO: Fluentvalidations - enum en request

@@ -70,7 +70,6 @@ public class TicketService : ITicketService
         Ticket? ticket = await _repository.GetByIdAsync(id);
         if (ticket is null) return null;
 
-
         if (!string.IsNullOrEmpty(patchTicket.Username) && patchTicket.Username != ticket.Username)
             ticket.ChangeUsername(patchTicket.Username);
 
