@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Context;
 
+/// <summary>
+/// Database context for tickets service.
+/// </summary>
 public class TicketDbContext : DbContext
 {
     public TicketDbContext(DbContextOptions<TicketDbContext> options)

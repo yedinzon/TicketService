@@ -8,12 +8,18 @@ namespace TicketApi.Mappers;
 
 public class ApiTicketProfile : Profile
 {
+    /// <summary>
+    /// Registers mappings between API models and DTOs.
+    /// </summary>
     public ApiTicketProfile()
     {
         RegisterRequests();
         RegisterResponses();
     }
 
+    /// <summary>
+    /// Registers mappings for request models.
+    /// </summary>
     private void RegisterRequests()
     {
         CreateMap<CreateTicketRequest, CreateTicketDto>()
@@ -28,6 +34,10 @@ public class ApiTicketProfile : Profile
                 ? Enum.Parse<TicketStatus>(src.Estado)
                 : (TicketStatus?)null));
     }
+
+    /// <summary>
+    /// Registers mappings for response models.
+    /// </summary>
     private void RegisterResponses()
     {
         CreateMap<TicketDto, TicketResponse>()

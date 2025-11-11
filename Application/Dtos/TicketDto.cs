@@ -2,7 +2,10 @@
 
 namespace Application.Dtos;
 
-public class TicketDto
+/// <summary>
+/// DTO for Ticket entity
+/// </summary>
+public record TicketDto
 {
     public Guid Id { get; set; }
     public string Username { get; set; } = null!;

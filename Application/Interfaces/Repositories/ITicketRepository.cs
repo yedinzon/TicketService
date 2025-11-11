@@ -3,6 +3,10 @@ using Domain.Entities;
 
 namespace Application.Interfaces.Repositories;
 
+/// <summary>
+/// Repository interface for Ticket entity,
+/// defines methods for CRUD operations and pagination.
+/// </summary>
 public interface ITicketRepository
 {
     Task<IEnumerable<Ticket>> GetAllAsync();

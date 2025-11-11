@@ -12,6 +12,12 @@ public class ValidationService : IValidationService
         _serviceProvider = serviceProvider;
     }
 
+    /// <summary>
+    /// Validates a model using the appropriate validator.
+    /// </summary>
+    /// <typeparam name="T">The type of the model to validate.</typeparam>
+    /// <param name="model">The model instance to validate.</param>
+    /// <returns></returns>
     public async Task<ValidationResult> ValidateAsync<T>(T model)
     {
         var validator = _serviceProvider.GetService<IValidator<T>>();

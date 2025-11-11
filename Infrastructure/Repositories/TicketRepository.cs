@@ -7,6 +7,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 
+/// <summary>
+/// Repository implementation for Ticket entity,
+/// provides methods for CRUD operations and pagination.
+/// </summary>
 public class TicketRepository : ITicketRepository
 {
     private readonly TicketDbContext _context;

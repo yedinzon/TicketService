@@ -5,6 +5,9 @@ namespace TicketApi.Validators;
 
 public class PagedRequestValidator : AbstractValidator<PagedRequest>
 {
+    /// <summary>
+    /// Validator for PagedRequest
+    /// </summary>
     public PagedRequestValidator()
     {
         RuleFor(x => x.PageNumber)

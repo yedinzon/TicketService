@@ -1,5 +1,8 @@
 ﻿namespace TicketApi.Models.Responses;
 
+/// <summary>
+/// Response model for ticket data
+/// </summary>
 public record TicketResponse
 {
     public Guid Codigo { get; set; }

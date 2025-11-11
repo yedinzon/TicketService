@@ -4,6 +4,9 @@ using System.Text.Json;
 
 namespace TicketApi.Middleware;
 
+/// <summary>
+/// Handles errors globally and logs them.
+/// </summary>
 public class ErrorMiddleware
 {
     private readonly RequestDelegate _next;

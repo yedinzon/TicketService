@@ -6,6 +6,9 @@ namespace TicketApi.Validators;
 
 public class UpdateTicketRequestValidator : AbstractValidator<UpdateTicketRequest>
 {
+    /// <summary>
+    /// Validator for UpdateTicketRequest
+    /// </summary>
     public UpdateTicketRequestValidator()
     {
         RuleFor(x => x.Usuario)
