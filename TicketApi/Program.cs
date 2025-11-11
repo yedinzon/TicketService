@@ -1,6 +1,9 @@
 
 using Application;
 using Infrastructure;
+using Infrastructure.Persistence.Context;
+using Infrastructure.Persistence.Seed;
+using Microsoft.EntityFrameworkCore;
 
 namespace TicketApi;
 
@@ -20,6 +23,14 @@ public class Program
         builder.Services.AddSwaggerGen();
 
         var app = builder.Build();
+
+        // Seed Database
+        using (IServiceScope scope = app.Services.CreateScope())
+        {
+            TicketDbContext db = scope.ServiceProvider.GetRequiredService<TicketDbContext>();
+            db.Database.Migrate();
+            InitialSeeder.Seed(db);
+        }
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
