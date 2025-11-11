@@ -1,8 +1,12 @@
-﻿namespace Domain.Entities;
+﻿using Domain.Enums;
+
+namespace Domain.Entities;
 
 public class Ticket
 {
-    public int Id { get; set; }
-    public string User { get; set; }
-    public string Estatus { get; set; }
+    public Guid Id { get; private set; } = Guid.NewGuid();
+    public string Username { get; private set; } = string.Empty;
+    public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
+    public DateTime? UpdatedAt { get; private set; } = null;
+    public TicketStatus Status { get; private set; } = TicketStatus.Open;
 }

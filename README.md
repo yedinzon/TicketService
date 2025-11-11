@@ -1,1 +1,4 @@
 # TicketService
+DDD
+AutoMapper
+Migrations
