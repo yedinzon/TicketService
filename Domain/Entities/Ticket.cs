@@ -18,5 +18,17 @@ public class Ticket
         Status = TicketStatus.Open;
     }
 
+    public void ChangeUsername(string newUsername)
+    {
+        Username = newUsername;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void ChangeStatus(TicketStatus newStatus)
+    {
+        Status = newStatus;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
     private Ticket() { }
 }

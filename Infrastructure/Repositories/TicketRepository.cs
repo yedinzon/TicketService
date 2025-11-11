@@ -45,6 +45,13 @@ public class TicketRepository : ITicketRepository
         return ticket;
     }
 
+    public async Task<Ticket> UpdateAsync(Ticket ticket)
+    {
+        _context.Tickets.Update(ticket);
+        await _context.SaveChangesAsync();
+        return ticket;
+    }
+
     public async Task DeleteAsync(Ticket ticket)
     {
         _context.Tickets.Remove(ticket);

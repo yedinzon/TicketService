@@ -46,12 +46,40 @@ public class TicketService : ITicketService
             : _mapper.Map<TicketDto>(ticket);
     }
 
-    public async Task<TicketDto> CreateAsync(CreateTicketDto createTicketDto)
+    public async Task<TicketDto> CreateAsync(CreateTicketDto createTicket)
     {
-        var ticket = new Ticket(createTicketDto.Username);
+        var ticket = new Ticket(createTicket.Username);
         Ticket createdTicket = await _repository.CreateAsync(ticket);
 
         return _mapper.Map<TicketDto>(createdTicket);
+    }
+
+    public async Task<TicketDto?> UpdateAsync(Guid id, UpdateTicketDto updateTicket)
+    {
+        Ticket? ticket = await _repository.GetByIdAsync(id);
+        if (ticket is null) return null;
+        ticket.ChangeUsername(updateTicket.Username);
+        ticket.ChangeStatus(updateTicket.Status);
+        Ticket ticketUpdated = await _repository.UpdateAsync(ticket);
+
+        return _mapper.Map<TicketDto>(ticketUpdated);
+    }
+
+    public async Task<TicketDto?> PatchAsync(Guid id, PatchTicketDto patchTicket)
+    {
+        Ticket? ticket = await _repository.GetByIdAsync(id);
+        if (ticket is null) return null;
+
+
+        if (!string.IsNullOrEmpty(patchTicket.Username) && patchTicket.Username != ticket.Username)
+            ticket.ChangeUsername(patchTicket.Username);
+
+        if (patchTicket.Status.HasValue && patchTicket.Status != ticket.Status)
+            ticket.ChangeStatus(patchTicket.Status.Value);
+
+        Ticket ticketUpdated = await _repository.UpdateAsync(ticket);
+
+        return _mapper.Map<TicketDto>(ticketUpdated);
     }
 
     public async Task<bool> DeleteAsync(Guid id)

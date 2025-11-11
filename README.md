@@ -3,3 +3,4 @@ DDD
 AutoMapper
 Migrations
 Pagination
+Formato Patch

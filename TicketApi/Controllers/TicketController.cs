@@ -2,6 +2,7 @@ using Application.Common;
 using Application.Dtos;
 using Application.Interfaces.Services;
 using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using TicketApi.Models.Requests;
 using TicketApi.Models.Responses;
@@ -25,9 +26,8 @@ public class TicketController : ControllerBase
     public async Task<IActionResult> GetAll()
     {
         IEnumerable<TicketDto> tickets = await _ticketService.GetAllAsync();
-        var ticketsResponse = _mapper.Map<IEnumerable<TicketResponse>>(tickets);
 
-        return Ok(ticketsResponse);
+        return Ok(_mapper.Map<IEnumerable<TicketResponse>>(tickets));
     }
 
     [HttpGet]
@@ -51,9 +51,8 @@ public class TicketController : ControllerBase
     {
         TicketDto? ticket = await _ticketService.GetByIdAsync(id);
         if (ticket is null) return NotFound();
-        var ticketResponse = _mapper.Map<TicketResponse>(ticket);
 
-        return Ok(ticketResponse);
+        return Ok(_mapper.Map<TicketResponse>(ticket));
     }
 
     [HttpPost]
@@ -68,6 +67,34 @@ public class TicketController : ControllerBase
             createdTicket);
     }
 
+    [HttpPut("{id:Guid}")]
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateTicketRequest request)
+    {
+        var ticketToUpdate = _mapper.Map<UpdateTicketDto>(request);
+        TicketDto? updatedTicket = await _ticketService.UpdateAsync(id, ticketToUpdate);
+        if (updatedTicket is null) return NotFound();
+
+        return Ok(_mapper.Map<TicketResponse>(updatedTicket));
+    }
+
+    [HttpPatch("{id:Guid}")]
+    [Consumes("application/json-patch+json")]
+    public async Task<IActionResult> Patch(
+        Guid id,
+        [FromBody] JsonPatchDocument<PatchTicketRequest> patchDoc)
+    {
+        if (patchDoc is null) return BadRequest();
+
+        var ticketRequest = new PatchTicketRequest();
+        patchDoc.ApplyTo(ticketRequest);
+
+        var ticketToPatch = _mapper.Map<PatchTicketDto>(ticketRequest);
+        TicketDto? updatedTicket = await _ticketService.PatchAsync(id, ticketToPatch);
+        if (updatedTicket == null) return NotFound();
+
+        return Ok(_mapper.Map<TicketResponse>(updatedTicket));
+    }
+
     [HttpDelete("{id:Guid}")]
     public async Task<IActionResult> Delete(Guid id)
     {
@@ -79,4 +106,4 @@ public class TicketController : ControllerBase
 }
 
 //TODO: Validar parámetros de paginación y manejar errores.
-//TODO: Fluentvalidations
+//TODO: Fluentvalidations - enum en request

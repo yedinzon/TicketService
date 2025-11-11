@@ -4,6 +4,7 @@ using Infrastructure;
 using Infrastructure.Persistence.Context;
 using Infrastructure.Persistence.Seed;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Serialization;
 using TicketApi.Mappers;
 
 namespace TicketApi;
@@ -23,7 +24,12 @@ public static class Program
            typeof(Application.DependencyInjection).Assembly
        );
 
-        builder.Services.AddControllers();
+        builder.Services.AddControllers()
+            .AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            });
+
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();

@@ -1,5 +1,6 @@
 ﻿using Application.Dtos;
 using AutoMapper;
+using Domain.Enums;
 using TicketApi.Models.Requests;
 using TicketApi.Models.Responses;
 
@@ -11,6 +12,15 @@ public class ApiTicketProfile : Profile
     {
         CreateMap<CreateTicketRequest, CreateTicketDto>()
             .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Usuario));
+        CreateMap<UpdateTicketRequest, UpdateTicketDto>()
+            .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Usuario))
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => Enum.Parse<TicketStatus>(src.Estado)));
+        CreateMap<PatchTicketRequest, PatchTicketDto>()
+            .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Usuario))
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src =>
+                !string.IsNullOrEmpty(src.Estado)
+                ? Enum.Parse<TicketStatus>(src.Estado)
+                : (TicketStatus?)null));
 
         CreateMap<TicketDto, TicketResponse>()
             .ForMember(dest => dest.Codigo, opt => opt.MapFrom(src => src.Id))
