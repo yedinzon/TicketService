@@ -38,10 +38,14 @@ public class TicketController : ControllerBase
 
     [HttpGet]
     public async Task<IActionResult> GetPaged(
-        [FromQuery] int pageNumber = 1,
-        [FromQuery] int pageSize = 10)
+        [FromQuery] PagedRequest pagedRequest)
     {
-        PagedResult<TicketDto> ticketsPaged = await _ticketService.GetPagedAsync(pageNumber, pageSize);
+        var result = await _validationService.ValidateAsync(pagedRequest);
+        if (!result.IsValid)
+            return BadRequest(result.Errors.Select(e => new { e.PropertyName, e.ErrorMessage }));
+
+        PagedResult<TicketDto> ticketsPaged =
+            await _ticketService.GetPagedAsync(pagedRequest.PageNumber, pagedRequest.PageSize);
 
         var ticketsResponse = new PagedResult<TicketResponse>(
             items: _mapper.Map<IReadOnlyList<TicketResponse>>(ticketsPaged.Items),
@@ -123,4 +127,4 @@ public class TicketController : ControllerBase
     }
 }
 
-//TODO: Validar parámetros de paginación y manejar errores.
+//TODO: manejar errores.
