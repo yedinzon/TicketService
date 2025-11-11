@@ -1,8 +1,8 @@
-﻿using Domain.Entities;
+﻿using Application.Dtos;
 
 namespace Application.Interfaces.Services;
 
 public interface ITicketService
 {
-    Task<IEnumerable<Ticket>> GetAll();
+    Task<IEnumerable<TicketDto>> GetAll();
 }
