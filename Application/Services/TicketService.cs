@@ -17,10 +17,20 @@ public class TicketService : ITicketService
         _repository = repository;
         _mapper = mapper;
     }
-    public async Task<IEnumerable<TicketDto>> GetAll()
+    public async Task<IEnumerable<TicketDto>> GetAllAsync()
     {
-        var x = await _repository.GetAll();
-        return _mapper.Map<IEnumerable<TicketDto>>(x);
+        IEnumerable<Ticket> tickets = await _repository.GetAllAsync();
+
+        return _mapper.Map<IEnumerable<TicketDto>>(tickets);
+    }
+
+    public async Task<TicketDto?> GetByIdAsync(Guid id)
+    {
+        Ticket? ticket = await _repository.GetByIdAsync(id);
+
+        return ticket is null
+            ? null
+            : _mapper.Map<TicketDto>(ticket);
     }
 
     public async Task<PagedResult<TicketDto>> GetPagedAsync(int pageNumber, int pageSize)

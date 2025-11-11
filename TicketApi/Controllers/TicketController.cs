@@ -1,3 +1,5 @@
+using Application.Common;
+using Application.Dtos;
 using Application.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,19 +16,30 @@ namespace TicketApi.Controllers
             _ticketService = ticketService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAll()
         {
-            var result = await _ticketService.GetAll();
-
-            return Ok(result);
+            IEnumerable<TicketDto> tickets = await _ticketService.GetAllAsync();
+            return Ok(tickets);
         }
 
         [HttpGet("GetPaged")]
-        public async Task<IActionResult> GetPaged([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetPaged(
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10)
         {
-            var result = await _ticketService.GetPagedAsync(pageNumber, pageSize);
-            return Ok(result);
+            PagedResult<TicketDto> ticketsPaged = await _ticketService.GetPagedAsync(pageNumber, pageSize);
+            return Ok(ticketsPaged);
+        }
+
+        [HttpGet("GetById/{id:Guid}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            TicketDto? raffle = await _ticketService.GetByIdAsync(id);
+            if (raffle is null) return NotFound();
+            return Ok(raffle);
         }
     }
 }
+
+//TODO: Validar parámetros de paginación y manejar errores.

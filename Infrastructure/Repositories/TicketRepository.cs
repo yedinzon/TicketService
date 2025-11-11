@@ -16,17 +16,25 @@ public class TicketRepository : ITicketRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<Ticket>> GetAll()
+    public async Task<IEnumerable<Ticket>> GetAllAsync()
     {
-        var x = await _context.Tickets.ToListAsync();
+        return await _context.Tickets
+            .AsNoTracking()
+            .ToListAsync();
+    }
 
-        return x;
+    public async Task<Ticket?> GetByIdAsync(Guid id)
+    {
+        return await _context.Tickets
+            .AsNoTracking()
+            .FirstOrDefaultAsync(t => t.Id == id);
     }
 
     public async Task<PagedResult<Ticket>> GetPagedAsync(int pageNumber, int pageSize)
     {
-        return await _context.Tickets.AsNoTracking()
-           .OrderByDescending(t => t.CreatedAt)
-           .ToPagedResultAsync(pageNumber, pageSize);
+        return await _context.Tickets
+            .AsNoTracking()
+            .OrderByDescending(t => t.CreatedAt)
+            .ToPagedResultAsync(pageNumber, pageSize);
     }
 }
