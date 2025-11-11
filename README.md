@@ -4,10 +4,10 @@
 SQL Server 2019+
 
 # Pasos de Instalación local
-1- Clonar el repositorio
-2- Configurar base de datos en appsettings.json
-3- Compilar y ejecutar la aplicación (Migraciones de db y datos iniciales se ejecutan automaticamente)
-4- Acceder a Swagger /swagger
+    1- Clonar el repositorio
+    2- Configurar base de datos en appsettings.json
+    3- Compilar y ejecutar la aplicación (Migraciones de db y datos iniciales se ejecutan automaticamente)
+    4- Acceder a Swagger /swagger
 
 # Descripción general
 En este proyecto se implementa un sistema de gestión de tickets utilizando Domain Driven Design (DDD) con una arquitectura limpia y separación de responsabilidades. 
