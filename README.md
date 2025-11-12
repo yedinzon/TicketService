@@ -1,15 +1,18 @@
 # TicketService
-# Requisitos del Sistema
+# Requisitos del Sistema Para Ejecución Local
 - .NET 8.0
 - SQL Server 2019+
 
-# Pasos de Instalación local
+# Requisitos del Sistema Para Ejecución con Docker
+- Docker Desktop
+
+# Pasos de Instalación y ejecución local
     1- Clonar el repositorio
     2- Configurar conexión a base de datos SQL Server en appsettings.json
     3- Compilar y ejecutar la aplicación. (Las migraciones de db y datos iniciales se ejecutan automaticamente)
     4- Acceder a Swagger /swagger
 
-# Instalación y Ejecución con Docker Compose
+# Pasos de instalación y ejecución con Docker Compose
     1- Clonar el repositorio
     2- Ubicarse en la raiz del proyecto /TicketService (al mismo nivel del archivo Dokerfile y docker-compose.yml)
     2- Iniciar el Stack de Contenedores ejecutando el comando: 
