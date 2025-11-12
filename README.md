@@ -76,7 +76,7 @@ Este proyecto implementa las siguientes buenas prácticas de desarrollo, princip
     NSubstitute: Librería para mocking de dependencias
     Cobertura: Tests para capas Domain y Application
 
-# Arbol del proyecto
+# Árbol del proyecto
     TicketService/
         TicketService.Domain/          # Dominio - Entidades y Lógica de Negocio
         TicketService.Application/     # Casos de Uso - Lógica de Aplicación
