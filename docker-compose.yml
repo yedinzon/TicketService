@@ -11,7 +11,7 @@ services:
       - sqlserver
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=TicketDb;User Id=sa;Password=StrongPassw0rd!;TrustServerCertificate=True"
+      ConnectionStrings__TicketDatabase: "Server=sqlserver,1433;Database=TicketDb;User Id=sa;Password=StrongPassw0rd!;TrustServerCertificate=True"
 
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest

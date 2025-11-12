@@ -5,9 +5,19 @@
 
 # Pasos de Instalación local
     1- Clonar el repositorio
-    2- Configurar base de datos en appsettings.json
-    3- Compilar y ejecutar la aplicación (Migraciones de db y datos iniciales se ejecutan automaticamente)
+    2- Configurar conexión a base de datos SQL Server en appsettings.json
+    3- Compilar y ejecutar la aplicación. (Las migraciones de db y datos iniciales se ejecutan automaticamente)
     4- Acceder a Swagger /swagger
+
+# Instalación y Ejecución con Docker Compose
+    1- Clonar el repositorio
+    2- Ubicarse en la raiz del proyecto /TicketService (al mismo nivel del archivo Dokerfile y docker-compose.yml)
+    2- Iniciar el Stack de Contenedores ejecutando el comando: 
+        docker compose up -d --build
+    3- Una vez que los contenedores estén operativos, acceder a la documentación de la API en:
+        http://localhost:8080/swagger
+    4- Limpiar el Entorno (¡Importante!), para detener los contenedores y eliminar la base de datos:
+        docker compose down -v
 
 # Descripción general
 En este proyecto se implementa un sistema de gestión de tickets utilizando Domain Driven Design (DDD) con una arquitectura limpia y separación de responsabilidades. 

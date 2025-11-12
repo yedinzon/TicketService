@@ -50,9 +50,16 @@ public static class Program
         // Seed Database
         using (IServiceScope scope = app.Services.CreateScope())
         {
-            TicketDbContext db = scope.ServiceProvider.GetRequiredService<TicketDbContext>();
-            db.Database.Migrate();
-            InitialSeeder.Seed(db);
+            try
+            {
+                TicketDbContext db = scope.ServiceProvider.GetRequiredService<TicketDbContext>();
+                db.Database.Migrate();
+                InitialSeeder.Seed(db);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("The Db has been created already");
+            }
         }
 
         if (app.Environment.IsDevelopment())
