@@ -8,7 +8,7 @@
 
 # Pasos de Instalación y ejecución local
     1- Clonar el repositorio
-    2- Configurar conexión a base de datos SQL Server en appsettings.json
+    2- Configurar conexión a base de datos SQL Server en TicketApi/appsettings.json
     3- Compilar y ejecutar la aplicación. (Las migraciones de db y datos iniciales se ejecutan automaticamente)
     4- Acceder a Swagger /swagger
 
@@ -39,7 +39,7 @@ API Layer: Expone los endpoints RESTful, controladores, configuración de mapeo 
 # Justificación del enfoque del proyecto
 La arquitectura DDD y frameworks como AutoMapper, FluentValidation, Entity Framework, MStest, NSubstitute y Serilog se utilizan solo para exponer el dominio de patrones modernos. Su uso, simplicidad o complejidad siempre dependerá de las necesidades específicas del proyecto. Esta base podría incluso extenderse con más detalle en logs o autenticación JWT si los requisitos lo exigieran. Tambien se podría incluir test unitarios y de integración usando TestContainers.
 
-# Endpoids disponibles
+# Endpoints disponibles
     GET/api/tickets/all         Lista de todos los tickets	
     GET/api/tickets             Lista paginada de tickets	
     GET/api/tickets/{id}	    Obtener ticket específico	
